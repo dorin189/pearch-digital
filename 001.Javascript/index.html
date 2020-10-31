@@ -1,0 +1,43 @@
+<script>
+
+  class Calculator {
+    
+    dictionary = {
+      'PLUS' : '+',
+      'MINUS': '-',
+      'TIMES': '*',
+      'DIVIDE': '/'
+    }
+    constructor(operand1, operator, operand2) {
+      this.operand1 = operand1
+      this.operator = operator;
+      this.operand2 = operand2;
+    }
+
+    getResult() {
+      const typeOfNumber = 'number'
+      if(typeof this.operand1 === typeOfNumber && 
+      typeof this.operand2 === typeOfNumber && 
+      this.operator !== null) 
+      {
+        this.operator = this.operator.toUpperCase();
+        
+        if(this.dictionary.hasOwnProperty(this.operator)) {
+          return eval(this.operand1 + this.dictionary[this.operator] + this.operand2);
+        } else {
+          return "This operations is not supported by our calculator!";
+        }
+      } else {
+        return "Please provide correct data like 10, 'Plus', 9";
+      }
+    }
+  }
+
+
+  calc1 = new Calculator(3, "Plus", 1);
+  calc1 = calc1.getResult();
+  calc2 = new Calculator(6, "Times", 2);
+  calc2 = calc2.getResult();
+  console.log("Result: ", calc1 + calc2);
+
+</script>

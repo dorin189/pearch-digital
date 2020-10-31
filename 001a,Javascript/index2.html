@@ -1,0 +1,71 @@
+<script>
+
+  class Calculator {
+    dictionary = {
+      'PLUS' : '+',
+      'MINUS': '-',
+      'TIMES': '*',
+      'DIVIDE': '/'
+    }
+
+    result = [];
+    constructor(data) {
+      this.data = data;
+      this.prepareData();
+    }
+
+    prepareData() {
+      for(let i = 0; i < this.data.length; i++) {
+        
+        if(typeof this.data[i] === 'number') {
+            this.result.push(this.data[i]);
+        } 
+
+        if(typeof this.data[i] === 'string') {
+          let operator = this.data[i].toUpperCase();
+          if(this.dictionary.hasOwnProperty(operator)) {
+            this.data[i] = this.dictionary[operator];
+            this.result.push(this.data[i]);
+          } else {
+           console.log(`Operations ${this.data[i]} is not supported by our calculator!`);
+           this.result = [];
+           break;
+          }
+        }
+
+        let isArray = Array.isArray(this.data[i]);
+        if(isArray) {
+          this.data = this.data[i];
+          this.prepareData();
+        }
+      }
+    }
+
+    getResult() {
+      console.log(this.result);
+      if(!this.result.length) {
+        return null;
+      } else {
+        let dataString = this.result.join(' ');
+       return eval(dataString);
+      }
+    }
+  }
+
+  $data1 = [
+    3, "Plus", [6, "Times", 2]
+  ];
+
+  $data2 = [3, "Plus", 
+    [6, "Times", [6, "Divide", 2]]
+  ];
+
+
+  calc1 = new Calculator($data1);
+  console.log(calc1.getResult());
+
+  
+  calc2 = new Calculator($data2);
+  console.log(calc2.getResult());
+
+</script>

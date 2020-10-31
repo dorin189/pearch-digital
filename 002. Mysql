@@ -1,0 +1,47 @@
+CREATE TABLE `tbl_user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_full_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+insert  into `tbl_user`(`user_full_name`) values ('Dan Ionel'),('Florin Tanase'),('Mircea Radu'),('Pavel Badea'),('Liviu Manea'),('Elena Dumitru'),('Adriana Radu'),('Viorel Pana'),('Maria Dima'),('Ion Horia'),('Liliana Ticu'),('Antonia Balan'),('Marius Lupu');
+
+
+CREATE TABLE `tbl_role` (
+  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+insert  into `tbl_role`(`role_name`) values ('IT'),('DRIVER'),('HR'),('CEO'), ('CTO');
+
+CREATE TABLE `tbl_user_role` (
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert  into `tbl_user_role`(`user_id`, `role_id`) values (1,1),(2,1),(3,1),(4,2),(5,2),(6,3);
+
+select user_full_name, role_name from tbl_user
+right join tbl_user_role
+on tbl_user_role.user_id = tbl_user.user_id
+join tbl_role
+on tbl_role.role_id = `tbl_user_role`.role_id
+where `tbl_role`.role_name = 'IT';
+
+
+select user_full_name, role_id as role from tbl_user
+left join tbl_user_role
+on tbl_user_role.user_id = tbl_user.user_id
+WHERE tbl_user_role.`role_id` IS NULL;
+
+
+select user_full_name as role from tbl_user
+left join tbl_user_role
+on tbl_user_role.user_id = tbl_user.user_id
+WHERE tbl_user_role.`role_id` in (select tbl_user_role.role_id as duplicateNumber from tbl_user
+right join tbl_user_role
+on tbl_user_role.user_id = tbl_user.user_id
+group by tbl_user_role.role_id
+having count(tbl_user_role.role_id) >1);
